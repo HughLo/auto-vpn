@@ -70,7 +70,7 @@ type DescribeResult struct {
 
 var global_state DescribeResult
 
-//! query AWS server to obtain the current instace status
+//! query AWS server to obtain the current instace status.
 func query_ec2(inst_id, query_string string) (DescribeResult, error) {
   args := []string{"ec2", "describe-instances", "--instance-id", inst_id}
 
