@@ -2,16 +2,19 @@ package main
 
 import (
   "os"
-  _ "os/exec"
   "fmt"
   "log"
   "time"
-  _ "encoding/json"
   "AWSCLI"
   "ss"
 )
 
+//Replace this with your own EC2 Instance ID.
 var instance_id string = "i-ff6e595a"
+//Replace this with your shadowsocks server password
+var psd_text string = "password"
+//Replace this with your own shadowsocks client port number
+var local_port int = 10801
 
 func main() {
   sub_cmd := os.Args[1]
@@ -40,9 +43,9 @@ func main() {
         if ss_ctrl == nil {
           log.Fatal("Cannot create shadowsocks client instance. Do not forget to stop the EC instance.")
         }
-        ss_ctrl.Password = "password"
+        ss_ctrl.Password = psd_text
         ss_ctrl.ServerAddr = dr.Reservations[0].Instances[0].PublicDnsName
-        ss_ctrl.LocalPort = 10801
+        ss_ctrl.LocalPort = local_port
         err = ss_ctrl.StartDaemon()
         if err != nil {
           fmt.Println("Cannot start shadowsocks client. Do not forget to stop EC2 instance.")
@@ -101,19 +104,4 @@ func main() {
       fmt.Println("Stop shadowsocks client successfully")
     }
   }
-
-  /*
-  if sub_cmd == "start" {
-    start_instance()
-    start_shadowsocks()
-  } else if sub_cmd == "stop" {
-    stop_instance()
-    stop_shadowsocks()
-  } else if sub_cmd == "status" {
-    instance_status()
-  } else if sub_cmd == "sslocal" {
-    instance_status()
-    start_shadowsocks()
-  }
-  */
 }

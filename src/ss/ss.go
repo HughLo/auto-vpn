@@ -1,3 +1,5 @@
+//Package SS wraps the life-cycle control of shadowsocks client. This package
+//uses sslocal script to control the shadowsocks life-cycle
 package SS
 
 import (
@@ -5,6 +7,7 @@ import (
   "strconv"
 )
 
+//SSLocal represents a shadowsocks client.
 type SSLocal struct {
   ServerAddr string
   ServerPort int
@@ -15,6 +18,7 @@ type SSLocal struct {
   Method string
 }
 
+//DefaultSSLocal creates a new SSLocal with default configuration.
 func DefaultSSLocal() *SSLocal {
   return &SSLocal {
     ServerAddr: "",
@@ -27,6 +31,9 @@ func DefaultSSLocal() *SSLocal {
   }
 }
 
+//New creates a new SSLocal. srv is server address, local is local address, psd
+//is the shadowsocks server password, local_port is the port number of shadowsocks
+//client, time_out is the time out setup of shadowsocks client.
 func New(srv, local, psd, method string,
   srv_port, local_port, time_out int) *SSLocal {
   return &SSLocal{
@@ -40,14 +47,17 @@ func New(srv, local, psd, method string,
   }
 }
 
+//StartDaemon starts sslocal as daemon
 func (self *SSLocal) StartDaemon() error {
   return self.control_sslocal_daemon("start")
 }
 
+//StopDaemon stops sslocal daemon
 func (self *SSLocal) StopDaemon() error {
   return self.control_sslocal_daemon("stop")
 }
 
+//RestartDaemon restarts sslocal daemon
 func (self *SSLocal) RestartDaemon() error {
   return self.control_sslocal_daemon("restart")
 }
