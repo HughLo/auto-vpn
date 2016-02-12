@@ -92,6 +92,7 @@ func main() {
     }
 
     fmt.Printf("currnet status: %s\n", dr.Reservations[0].Instances[0].State.Name)
+    fmt.Printf("public dns name: %s\n", dr.Reservations[0].Instances[0].PublicDnsName)
   } else if sub_cmd == "stop-dae" {
     ss_ctrl := SS.DefaultSSLocal()
     if ss_ctrl == nil {
