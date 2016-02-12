@@ -125,7 +125,7 @@ func (self *AWSEC2Instance) InstanceState() (*DescribeResult, error) {
   return &dr, nil
 }
 
-type StateCallbackT func(error)
+type StateCallbackT func(error, *DescribeResult)
 func (self *AWSEC2Instance) WaitFor(state string,
   time_out time.Duration, callback StateCallbackT) {
   request_count := int((time_out / time.Second) + 1)
@@ -134,13 +134,13 @@ func (self *AWSEC2Instance) WaitFor(state string,
     if err == nil {
       self.CachedState = *dr
       if dr.Reservations[0].Instances[0].State.Name == state {
-        callback(nil)
-        break;
+        callback(nil, dr)
+        return
       }
     }
   }
 
-  callback(errors.New("time out"))
+  callback(errors.New("time out"), nil)
 }
 
 func (self *AWSEC2Instance) control_ec2(sub_cmd, query_string string) ([]byte, error) {

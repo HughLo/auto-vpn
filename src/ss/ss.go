@@ -45,7 +45,7 @@ func (self *SSLocal) StartDaemon() error {
 }
 
 func (self *SSLocal) StopDaemon() error {
-  return self.control_sslocal_daemon("start")
+  return self.control_sslocal_daemon("stop")
 }
 
 func (self *SSLocal) RestartDaemon() error {
